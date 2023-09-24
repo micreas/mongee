@@ -76,7 +76,7 @@ export const dbRecordToUrl = (dbRecord: DatabaseRecord) => {
       ? `${dbRecord.username}:${dbRecord.password}@`
       : "",
     dbRecord.host,
-    `:${dbRecord.port}`,
+    dbRecord.protocol !== "mongodb+srv" ? `:${dbRecord.port}` : "",
     `/${dbRecord.name}`,
     (dbRecord.query && `?${dbRecord.query}`) || "",
   ];
