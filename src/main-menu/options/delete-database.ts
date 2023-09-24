@@ -8,7 +8,11 @@ import { DatabaseRecord } from "../../schemas/index.js";
 export const deleteDatabase: MainMenuAction = {
   label: "Delete a database record",
   handler: async () => {
-    const rows = await knex.select("*").from<DatabaseRecord>("databases");
+    const rows = await knex
+      .select("*")
+      .from<DatabaseRecord>("databases")
+      .from("databases")
+      .orderBy("alias", "asc");
 
     if (!rows.length) {
       bottomBar.log.write("No database records to delete.");
