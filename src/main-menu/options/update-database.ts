@@ -4,13 +4,21 @@ import { knex } from "../../db.js";
 import { MainMenuAction } from "../../types.js";
 import { bottomBar } from "../../utils/inquirer.js";
 import { DatabaseRecord } from "../../schemas/index.js";
-import { parseUrl } from "../../utils/db-urls.js";
+import {
+  dbRecordToUrl,
+  isValidMongoDbConnectionString,
+  parseUrl,
+} from "../../utils/db-urls.js";
 import { encrypt } from "../../utils/encryption.js";
 
 export const updateDatabase: MainMenuAction = {
   label: "Update a database record",
   handler: async ({ getMasterPassword }) => {
-    const rows = await knex.select<DatabaseRecord[]>("*").from("databases");
+    const rows = await knex
+      .select<DatabaseRecord[]>("*")
+      .from("databases")
+      .from("databases")
+      .orderBy("alias", "asc");
 
     if (!rows.length) {
       bottomBar.log.write("No database records to update.");
@@ -37,6 +45,10 @@ export const updateDatabase: MainMenuAction = {
           value: "name",
         },
         {
+          name: "Username",
+          value: "username",
+        },
+        {
           name: "Url",
           value: "url",
         },
@@ -48,6 +60,13 @@ export const updateDatabase: MainMenuAction = {
     });
 
     let updatedFields: Partial<DatabaseRecord> = {};
+
+    if (fieldsToEdit.includes("username")) {
+      updatedFields.username =
+        (await input({
+          message: "Enter the new username:",
+        })) || null;
+    }
 
     if (fieldsToEdit.includes("alias")) {
       updatedFields.name = await input({
@@ -66,8 +85,14 @@ export const updateDatabase: MainMenuAction = {
     if (fieldsToEdit.includes("url")) {
       const url = await input({
         message: "Enter the new url:",
-        default: `${databaseToEdit.host}:${databaseToEdit.port}`,
+        default: dbRecordToUrl(databaseToEdit),
       });
+
+      if (!isValidMongoDbConnectionString(url)) {
+        bottomBar.log.write("Invalid connection string");
+        return;
+      }
+
       const { password: parsedPassword, ...parsedUrl } = parseUrl(url);
 
       updatedFields = {
