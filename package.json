@@ -1,6 +1,6 @@
 {
-  "name": "db-tool",
-  "version": "1.0.0",
+  "name": "mongee",
+  "version": "0.0.1",
   "type": "module",
   "engines": {
     "node": ">=16.0.0"
@@ -23,6 +23,7 @@
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
     "@types/inquirer": "^9.0.3",
-    "@types/node": "^20.6.3"
+    "@types/node": "^20.6.3",
+    "typescript": "^5.2.2"
   }
 }
