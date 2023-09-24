@@ -4,6 +4,7 @@ import { changeMasterPassword } from "./options/change-master-password.js";
 import { copyCollectionsAcrossDatabases } from "./options/copy-dollections-across-databases.js";
 import { deleteDatabase } from "./options/delete-database.js";
 import { exit } from "./options/exit.js";
+import { showDatabaseDetails } from "./options/show-database-details.js";
 import { updateDatabase } from "./options/update-database.js";
 
 export const mainMenu: MainMenuConfig = {
@@ -12,7 +13,8 @@ export const mainMenu: MainMenuConfig = {
     addDatabase,
     deleteDatabase,
     updateDatabase,
-    copyCollectionsAccrossDatabases: copyCollectionsAcrossDatabases,
+    copyCollectionsAcrossDatabases,
+    showDatabaseDetails,
     changeMasterPassword,
     exit,
   },
