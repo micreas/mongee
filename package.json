@@ -1,0 +1,22 @@
+{
+  "name": "db-tool",
+  "version": "1.0.0",
+  "type": "module",
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "exports": "./build/index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@inquirer/prompts": "^3.1.1",
+    "@types/bcrypt": "^5.0.0",
+    "@types/inquirer": "^9.0.3",
+    "@types/node": "^20.6.3",
+    "bcrypt": "^5.1.1",
+    "commander": "^11.0.0",
+    "inquirer": "^9.2.11",
+    "knex": "^2.5.1",
+    "mongodb": "^6.1.0",
+    "sqlite3": "^5.1.6"
+  }
+}
