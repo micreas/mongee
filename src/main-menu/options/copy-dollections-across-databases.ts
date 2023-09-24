@@ -95,6 +95,11 @@ export const copyCollectionsAcrossDatabases: MainMenuAction = {
       })),
     });
 
+    if (!collectionsToCopy) {
+      bottomBar.log.write("No collections to copy.");
+      return;
+    }
+
     const copyingConfirmed = await confirm({
       message: `Are you sure you want to copy the following collections: ${collectionsToCopy.join(
         ", "
