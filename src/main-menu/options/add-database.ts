@@ -25,15 +25,22 @@ export const addDatabase: MainMenuAction = {
       bottomBar.log.write("Invalid connection string");
       return;
     }
-    const dbAlias = await input({
-      message: "Enter a database alias (what you'll see in list views):",
-    });
+
+    const parsedUrl = parseUrl(connectionString);
+
+    const dbNameDefault = parsedUrl.path.startsWith("/")
+      ? parsedUrl.path.split("/")[1]
+      : undefined;
 
     const dbName = await input({
       message: "Enter the database name (server DB name):",
+      default: dbNameDefault,
     });
 
-    const parsedUrl = parseUrl(connectionString);
+    const dbAlias = await input({
+      message: "Enter a database alias (what you'll see in list views):",
+      default: `[${parsedUrl.host}] ${dbName}`,
+    });
 
     let encryptedPassword: string | undefined;
 

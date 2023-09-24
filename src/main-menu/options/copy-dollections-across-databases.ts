@@ -1,4 +1,4 @@
-import { checkbox, password, select } from "@inquirer/prompts";
+import { checkbox, confirm, select } from "@inquirer/prompts";
 import { MongoClient } from "mongodb";
 
 import { knex } from "../../db.js";
@@ -34,7 +34,10 @@ const emptyLocalizedDate = Date().replace(/[^ ]/g, "-");
 export const copyCollectionsAcrossDatabases: MainMenuAction = {
   label: "Copy collections across databases",
   handler: async ({ getMasterPassword }) => {
-    const rows = await knex.select<DatabaseRecord[]>("*").from("databases");
+    const rows = await knex
+      .select<DatabaseRecord[]>("*")
+      .from("databases")
+      .orderBy("alias", "asc");
 
     if (!rows.length) {
       bottomBar.log.write("No databases to work with.");
@@ -79,6 +82,14 @@ export const copyCollectionsAcrossDatabases: MainMenuAction = {
         value: collection.name,
       })),
     });
+
+    const copyingConfirmed = await confirm({
+      message: `Are you sure you want to copy the following collections: ${collectionsToCopy.join(
+        ", "
+      )} from "${dbFromRecord.alias}" to "${dbToRecord.alias}"?`,
+    });
+
+    if (!copyingConfirmed) return;
 
     for (let index = 0; index < collectionsToCopy.length; index++) {
       const collection = collectionsToCopy[index];

@@ -7,6 +7,10 @@
   },
   "exports": "./build/index.js",
   "license": "MIT",
+  "scripts": {
+    "build": "tsc -b tsconfig.json",
+    "start": "node ./build/index.js"
+  },
   "dependencies": {
     "@inquirer/prompts": "^3.1.1",
     "@types/bcrypt": "^5.0.0",
