@@ -127,6 +127,9 @@ export const copyCollectionsBetweenDatabases: MainMenuAction = {
 
       while (await sourceCursor.hasNext()) {
         const sourceDoc = await sourceCursor.next();
+
+        if (!sourceDoc) continue;
+
         await dbTo.db().collection(collection).updateOne(
           { _id: sourceDoc._id },
           {

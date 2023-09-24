@@ -13,7 +13,7 @@ import { passwordIsValid } from "./utils/passwords.js";
   try {
     await initDatabase();
 
-    let masterPassword: string;
+    let masterPassword: string | undefined;
 
     const [masterPasswordRecord] = await knex
       .table<MasterPasswordRecord>("master_passwords")
@@ -57,7 +57,10 @@ import { passwordIsValid } from "./utils/passwords.js";
     }
 
     const mainMenuGlobals: MainMenuGlobals = {
-      getMasterPassword: () => masterPassword,
+      getMasterPassword: () => {
+        if (!masterPassword) throw new Error("Mater password is missing"); // should never happen
+        return masterPassword;
+      },
       setMasterPassword: (password) => {
         masterPassword = password;
       },

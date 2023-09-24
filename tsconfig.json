@@ -5,6 +5,7 @@
     "moduleResolution": "Node16",
     "esModuleInterop": true,
     "skipLibCheck": true,
+    "strict": true,
     "baseUrl": "./src",
     "outDir": "./build"
   }
