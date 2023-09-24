@@ -31,8 +31,8 @@ const toHHMMSS = function (sec: number) {
 
 const emptyLocalizedDate = Date().replace(/[^ ]/g, "-");
 
-export const copyCollectionsAcrossDatabases: MainMenuAction = {
-  label: "Copy collections across databases",
+export const copyCollectionsBetweenDatabases: MainMenuAction = {
+  label: "Copy collections between databases",
   handler: async ({ getMasterPassword }) => {
     const rows = await knex
       .select<DatabaseRecord[]>("*")
