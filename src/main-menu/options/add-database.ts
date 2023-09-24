@@ -28,7 +28,7 @@ export const addDatabase: MainMenuAction = {
 
     const parsedUrl = parseUrl(connectionString);
 
-    const dbNameDefault = parsedUrl.path.startsWith("/")
+    const dbNameDefault = parsedUrl.path?.startsWith("/")
       ? parsedUrl.path.split("/")[1]
       : undefined;
 
