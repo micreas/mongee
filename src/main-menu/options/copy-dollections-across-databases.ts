@@ -1,4 +1,4 @@
-import { checkbox, confirm, select } from "@inquirer/prompts";
+import { checkbox, confirm, password, select } from "@inquirer/prompts";
 import { MongoClient } from "mongodb";
 
 import { knex } from "../../db.js";
@@ -52,6 +52,16 @@ export const copyCollectionsAcrossDatabases: MainMenuAction = {
       })),
     });
 
+    dbFromRecord.password =
+      dbFromRecord.password &&
+      decrypt(dbFromRecord.password, getMasterPassword());
+
+    if (dbFromRecord.username && !dbFromRecord.password) {
+      dbFromRecord.password = await password({
+        message: `Enter the source database password (${dbFromRecord.alias}):`,
+      });
+    }
+
     const dbToRecord = await select({
       message: "Target database server:",
       choices: rows.map((row) => ({
@@ -60,12 +70,14 @@ export const copyCollectionsAcrossDatabases: MainMenuAction = {
       })),
     });
 
-    dbFromRecord.password =
-      dbFromRecord.password &&
-      decrypt(dbFromRecord.password, getMasterPassword());
-
     dbToRecord.password =
       dbToRecord.password && decrypt(dbToRecord.password, getMasterPassword());
+
+    if (dbToRecord.username && !dbToRecord.password) {
+      dbToRecord.password = await password({
+        message: `Enter the target database password (${dbToRecord.alias}):`,
+      });
+    }
 
     const dbFrom = new MongoClient(dbRecordToUrl(dbFromRecord));
     const dbTo = new MongoClient(dbRecordToUrl(dbToRecord));
