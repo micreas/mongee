@@ -1,10 +1,16 @@
 import knexPkg from "knex";
+import path from "path";
+import * as url from "url";
+
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 
 export const knex = knexPkg.knex({
   client: "sqlite3",
+
   connection: {
-    filename: "./db.sqlite",
+    filename: path.join(__dirname, "../db.sqlite"),
   },
+
   useNullAsDefault: true,
 });
 
