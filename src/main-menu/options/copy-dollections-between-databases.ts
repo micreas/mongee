@@ -168,5 +168,8 @@ export const copyCollectionsBetweenDatabases: MainMenuAction = {
         bottomBar.updateBottomBar(lines.join("\n"));
       }
     }
+
+    await dbFrom.close();
+    await dbTo.close();
   },
 };
